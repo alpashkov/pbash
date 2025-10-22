@@ -6,7 +6,7 @@ A lightweight, educational bash simulator written in C for learning purposes and
 
 - **Command System**: Modular command architecture with easy extension
 - **Raw Terminal Handling**: Full control over terminal input/output
-- **Signal Handling**: Proper SIGINT/SIGTERM handling with graceful shutdown
+- **Signal Handling**: Very basic, needs to be implemented properly
 - **Cross-platform**: Designed for Linux systems with POSIX compliance
 - **Minimal Dependencies**: Only requires standard C libraries and pthreads
 

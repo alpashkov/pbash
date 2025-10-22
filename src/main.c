@@ -9,68 +9,45 @@
 
 static volatile sig_atomic_t stop_flag = 0;
 
-static
-void* signal_handler_thread(void* arg)
+static 
+void signal_handler(int sig)
 {
-    sigset_t* set = (sigset_t*)arg;
-    int sig;
-
-    while (1) {
-        int res = sigwait(set, &sig);
-        if (res == 0) {
-            switch (sig) {
-                case SIGTERM:
-                case SIGINT:
-                    stop_flag = 1;
-                    return NULL;
-                default:
-                    break;
-            }
-        } else {
-            perror("sigwait");
-        }
-    }
-    return NULL;
+    stop_flag = 1;
+    cli_printf("Signal received\n");
 }
-
-static
-int sig_init(pthread_t* tid)
-{
-    sigset_t set;
-    sigemptyset(&set);
-    sigaddset(&set, SIGTERM);
-    sigaddset(&set, SIGINT);
-
-    if (pthread_sigmask(SIG_BLOCK, &set, NULL) != 0) {
-        perror("pthread_sigmask");
-        return -1;
-    }
-
-    if (pthread_create(tid, NULL, signal_handler_thread, &set) != 0) {
-        perror("pthread_create");
-        return -1;
-    }
-}
-
 
 int main()
 {
-    pthread_t tid;
-    int rc;
+    int rc = 0;
+
+    struct sigaction sa;
+    sa.sa_handler = signal_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
     
-    // if (rc = sig_init(&tid) != 0)    goto sig_cleanup;
-    cmd_init();
-    if (rc = cli_init() != 0)        goto cli_cleanup;
+    if (sigaction(SIGINT, &sa, NULL) == -1) {
+        perror("sigaction(SIGINT)");
+        rc = -1;
+        return rc;
+    }
+    
+    if (sigaction(SIGTERM, &sa, NULL) == -1) {
+        perror("sigaction(SIGTERM)");
+        rc = -1;
+        return rc;
+    }
+
+    if ((rc = cmd_init()) != 0)        goto cmd_cleanup;
+    if ((rc = cli_init()) != 0)        goto cli_cleanup;
 
     while (!stop_flag) {
         cli_process_input();
-
     }
 
 cli_cleanup:
     cli_deinit();
-sig_cleanup:
-    pthread_join(tid, NULL);
+cmd_cleanup:
+    cmd_deinit();
 
     return rc;
 }
