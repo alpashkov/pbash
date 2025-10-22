@@ -1,3 +1,7 @@
+/*
+    WiP, this file is not being compiled.
+    Bad solution, needs to be redone.
+*/
 #ifndef _HISTORY_H_
 #define _HISTORY_H_
 

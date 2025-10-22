@@ -16,10 +16,23 @@ size_t cmd_glue_get_idx_by_name(const char* name);
 Returns the command at the given index;
 */
 Command_t* cmd_glue_get_cmd_by_idx(size_t idx);
-
+/*
+Inits commands provided by CMake generation.
+*/
 void cmd_glue_init();
+/*
+Deinits commands;
+*/
 void cmd_glue_deinit();
+/*
+Lists all available commands;
+*/
 void cmd_glue_list_commands();
+/*
+Provides interface to access command collction.
+--- TODO:
+    This is a temporary solution, but it's not a good one.
+*/
 Command_t** cmd_glue_get_collection();
 
 

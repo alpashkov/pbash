@@ -1,3 +1,7 @@
+/*
+    WiP, this file is not being compiled.
+    Bad solution, needs to be redone.
+*/
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
