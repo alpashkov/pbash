@@ -7,7 +7,14 @@
 #include "cmd_common.h"
 @CMD_INCLUDES@
 
+/*
+Tries to find a command by name. Returns the index of the command
+if found, otherwise returns -1.
+*/
 size_t cmd_glue_get_idx_by_name(const char* name);
+/*
+Returns the command at the given index;
+*/
 Command_t* cmd_glue_get_cmd_by_idx(size_t idx);
 
 void cmd_glue_init();

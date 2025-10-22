@@ -48,15 +48,8 @@ foreach(h ${CMD_HEADERS})
     if (c_match EQUAL -1)
         message(FATAL_ERROR " ${c} does not have expected function definition (${expected_func}).")
     endif()
-    
-# - 3) expected ARGC_MAX definition
-    string(REGEX MATCH "${expected_define}" h_match "${h_content}")
-    if (NOT h_match)
-        message(FATAL_ERROR " ${h} does not have expected ARGC_MAX definition (or definition is not numerical).")
-    endif()
 
     string(APPEND CMD_NAMES "\"${name}\", ")
-    string(APPEND CMD_ARGMAXES "${UPPER_NAME}_ARGC_MAX, ")
     string(APPEND CMD_FPTRS "${name}, ")
     string(APPEND CMD_INCLUDES "#include \"${h}\"\n")
 endforeach()
@@ -74,7 +67,6 @@ function(trim_last_chars input num output)
 endfunction()
 
 trim_last_chars(${CMD_NAMES} 2 CMD_NAMES)
-trim_last_chars(${CMD_ARGMAXES} 2 CMD_ARGMAXES)
 trim_last_chars(${CMD_FPTRS} 2 CMD_FPTRS)
 
 configure_file("${CMAKE_SOURCE_DIR}/cmake/templates/cmd_glue_gen.h.in" "${CMD_GLUE_GEN_H}" @ONLY)
