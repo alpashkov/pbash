@@ -25,11 +25,12 @@ int main()
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        perror("sigaction(SIGINT)");
-        rc = -1;
-        return rc;
-    }
+    // for CTRL+C to work smoothly, TODO
+    // if (sigaction(SIGINT, &sa, NULL) == -1) {
+    //     perror("sigaction(SIGINT)");
+    //     rc = -1;
+    //     return rc;
+    // }
     
     if (sigaction(SIGTERM, &sa, NULL) == -1) {
         perror("sigaction(SIGTERM)");
